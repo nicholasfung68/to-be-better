@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>长按删除效果</title>
+  <script src="http://www.jq22.com/jquery/jquery-1.9.1.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    ul {
+      border: 1px solid black;
+    }
+
+    li {
+      padding: 10px 20px;
+      background: #ccc;
+      border-bottom: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>长按列表删除</h2>
+    <ul class="list-unstyled">
+      <li class="touchMe">列表1</li>
+      <li class="touchMe">列表2</li>
+      <li class="touchMe">列表3</li>
+    </ul>
+  </div>
+  <script>
+    var timeOutEvent = 0;
+    $(function () {
+      $('.touchMe').on({
+        touchstart: function (e) {
+          console.log('this =>', $(this));
+          var index = $(this).index();
+          // 将当前元素的索引作为参数进行传递
+          timeOutEvent = setTimeout("longPress(" + index + ")", 500);
+          e.preventDefault();
+        },
+        touchmove: function () {
+          clearTimeout(timeOutEvent);
+          timeOutEvent = 0;
+        },
+        touchend: function () {
+          clearTimeout(timeOutEvent);
+          if (timeOutEvent != 0) {
+            alert('你这是点击，不是长按');
+          }
+          return false;
+        }
+      });
+    });
+    function longPress(t) {
+      timeOutEvent = 0;
+      if (confirm('您确定要删除？' + t)) {
+        // 用传递过来的参数定位当前元素
+        $('.touchMe').eq(t).remove();
+        console.log('已删除');
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!--
+ * @Author: Nicholas Fung
+ * @Date: 2020-04-13 13:58:07
+ * @LastEditors: Nicholas Fung
+ * @LastEditTime: 2020-08-21 17:22:46
+ * @Description: 拖拽事件
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- ondragover 事件规定在何处放置被拖动的数据，默认是无法将数据、元素放到其他元素中，
+  需要 preventDefault() 阻止对元素的默认处理方式。 -->
+  <div
+    id="aaa"
+    ondrop="drop(event)"
+    ondragover="allowDrop(event)"
+  >aaa</div>
+
+  <!-- draggable 设置是否可拖动 -->
+  <div
+    id="bbb"
+    draggable="true"
+    ondragstart="drag(event)"
+  >bbb</div>
+
+</body>
+</html>
+
+<style>
+  #aaa,
+  #ccc {
+    width: 300px;
+    height: 200px;
+    background-color: lightblue;
+  }
+  #ccc {
+    background-color: #ff6f4b;
+  }
+  #bbb {
+    width: 100px;
+    height: 80px;
+    background-color:#ffb403;
+  }
+</style>
+
+<script>
+
+  function allowDrop(e) {
+    e.preventDefault();
+  }
+
+  function drag(e) {
+    console.log('drag', e)
+    e.dataTransfer.setData('Text', e.target.id);
+  }
+
+  function drop(e) {
+    console.log('drop', e);
+    e.preventDefault();
+    const data = e.dataTransfer.getData('Text');
+    e.target.appendChild(document.getElementById(data));
+  }
+
+</script>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>flex布局</h1>
+
+  <div class="father_box">
+    <div class="child">1</div>
+    <div class="child">2</div>
+    <div class="child">3</div>
+    <div class="child">4</div>
+    <div class="child">5</div>
+  </div>
+</body>
+</html>
+
+<style>
+  .father_box {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    justify-content: space-around;
+  }
+  .child {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    text-align: center;
+    line-height: 100px;
+    background-color: #ffb403;
+  }
+</style>

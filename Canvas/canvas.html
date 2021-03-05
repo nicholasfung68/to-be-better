@@ -1,0 +1,276 @@
+<!--
+ * @Author: Nicholas Fung
+ * @Date: 2020-04-10 13:53:18
+ * @LastEditors: Nicholas Fung
+ * @LastEditTime: 2020-12-25 17:08:59
+ * @Description: canvas学习
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas学习</title>
+</head>
+<body>
+  <img
+    id="myImg"
+    src="./img_the_scream.jpg"
+    alt="ohmygod"
+    width="220"
+    height="277"
+    draggable="true"
+    ondragstart="drag(event)"
+    ondrop="drop(event)"
+  >
+  <br>
+  <canvas 
+    id="myCanvas"
+    width="500"
+    height="500"
+    style="border: 1px solid #c3c3c3"
+    ondragover="allowDrop(event)"
+    ondrop="drop(event)"
+  ></canvas>
+</body>
+</html>
+
+<script>
+  const c = document.getElementById('myCanvas'); // 获取canvas dom节点
+  const ctx = c.getContext('2d'); // 创建context对象
+
+  function allowDrop(e) {
+    e.preventDefault();
+  }
+
+  function drag(e) {
+    console.log('drag', e)
+    e.dataTransfer.setData('Text', e.target.id);
+  }
+
+  function drop(e) {
+    console.log('drop', e);
+    e.preventDefault();
+    const data = e.dataTransfer.getData('Text');
+    const img = document.getElementById(data);
+    ctx.drawImage(img, 60, 60);
+    ctx.drawImage(img, 10, 10, 240, 160);
+  }
+
+  // // 绘制矩形
+  // ctx.fillStyle = 'lightblue'; // 填充颜色, 如果不设置默认为黑色
+  // ctx.fillRect(10, 10, 150, 150); // 从 (0, 0)坐标开始画一个宽150高75的矩形
+  // ctx.strokeRect(20, 20, 130, 130); // 绘制一个矩形的边框
+  // ctx.clearRect(25, 25, 120, 120); // 清除指定矩形区域，让清除部分完全透明
+
+  // // 绘制线条
+  // ctx.moveTo(150, 75); // 线条起点坐标 moveTo(x, y)
+  // ctx.lineTo(500, 500); // 线条结束坐标 lineTo(x, y)
+  // ctx.stroke(); // 绘制线条要使用到的方法， 具体不懂，待深入学习后才得知
+
+  // // 绘制圆形
+  // ctx.beginPath();
+  // ctx.arc(150, 75, 40, 0, 2 * Math.PI); // arc(x, y, r, start, stop)
+  // ctx.stroke();
+
+  // // 文本
+  // ctx.font = '30px Arial'; // font 定义字体
+  // ctx.fillText('Hello canvas!', 200, 80); // 绘制实心的文本 fillText(text, x, y)
+  // ctx.strokeText('空心字体', 200, 160); // 绘制空心的文本 stroke(text, x, y)
+
+  // // 渐变
+  // // 渐变可以填充在矩形、圆形、线条、文本等，各种形状可自定义不同的颜色
+  // // 有以下两种方式设置canvas渐变
+  // // createLinearGradient(x1, y1, x2, y2) 创建线条渐变
+  // // createRadialGradient(x1, y1, r1, x2, y2, r2) 创建一个径向/圆渐变
+  // // 当在使用渐变对象时，必须要使用两种或两种以上的停止颜色
+  // // addColorStop(number, 'color') 方法指定颜色停止，参数使用坐标描述，可以是0至1
+  // // 使用渐变，设置fillStyle或strokeStyle的值为 渐变，然后绘制形状，如矩形，文本，或一条线。
+  // // 1、使用createLinearGradient()
+  // // 创建渐变
+  // const grd = ctx.createLinearGradient(0, 0, 200, 0);
+  // grd.addColorStop(0, 'red');
+  // grd.addColorStop(1, 'blue');
+  // // 填充渐变
+  // ctx.fillStyle = grd;
+  // ctx.fillRect(10, 10, 350, 450);
+  // // 2、使用createRadialGradient()
+  // // 创建渐变
+  // const grd1 = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+  // grd1.addColorStop(0, 'blue');
+  // grd1.addColorStop(1, 'white');
+  // // 填充渐变
+  // ctx.fillStyle = grd1;
+  // ctx.fillRect(10, 10, 150, 80);
+
+  // // 图像
+  // // 把一幅图放到画布上，使用 drawImage(image, x, y) 方法
+  // const img = document.getElementById('myImg');
+  // // onload 事件在图片加载完成后立即执行
+  // img.onload = () => ctx.drawImage(img, 60, 60);
+
+  // // 绘制一个三角形
+  // ctx.beginPath();
+  // ctx.moveTo(100, 50);
+  // ctx.lineTo(350, 175);
+  // ctx.lineTo(100, 300);
+  // ctx.fillStyle = '#ffb403'
+  // ctx.fill();
+
+  // // 绘制一个笑脸
+  // // 一个非常有用的函数，而这个函数实际上并不能画出任何东西，
+  // // 利用moveTo(x, y) 将笔触移动到指定位置，绘制一些不连续路径
+  // // 或者可以想象一下在纸上作业，一支钢笔或者铅笔的笔尖从一个点到另一个点的移动过程。
+  // ctx.beginPath();
+  // ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制
+  // ctx.moveTo(110, 75);
+  // ctx.arc(75, 75, 35, 0, Math.PI, false);   // 口(顺时针)
+  // ctx.moveTo(65, 65);
+  // ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // 左眼
+  // ctx.moveTo(95, 65);
+  // ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // 右眼
+  // ctx.stroke();
+
+  // // 绘制一个填充三角形、一个描边三角形
+  // // 填充三角形
+  // ctx.beginPath();
+  // ctx.moveTo(20, 20);
+  // ctx.lineTo(100, 20);
+  // ctx.lineTo(20, 100)
+  // ctx.fill();
+  // // 描边三角形
+  // ctx.beginPath();
+  // ctx.moveTo(120, 120);
+  // ctx.lineTo(40, 120);
+  // ctx.lineTo(120, 40);
+  // ctx.closePath();
+  // ctx.stroke();
+
+  // // 圆弧
+  // // arc(x, y, radius, startAngle, endAngle, anticlockwise)
+  // // 画一个以（x,y）为圆心的以radius为半径的圆弧（圆），
+  // // 从startAngle开始到endAngle结束，按照anticlockwise给定的方向（默认为顺时针）来生成。
+  // // arc()函数中表示角的单位是弧度，不是角度。角度与弧度的js表达式: 弧度=(Math.PI/180)*角度。
+  // for (let i = 0; i < 4; i++) {
+  //   for (let j = 0; j < 3; j++) {
+  //     ctx.beginPath();
+  //     const x = 25 + j * 50; // x坐标
+  //     const y = 25 + i * 50; // y坐标
+  //     const radius = 20; // 半径
+  //     const startAngle = 0; // 开始弧度
+  //     const endAngle = Math.PI + (Math.PI * j) / 2; // 结束弧度
+  //     const anticlockwise = i % 2 === 0 ? false : true; // 顺时针或者逆时针
+
+  //     ctx.arc(x, y, radius, startAngle, endAngle);
+  //     if (i > 1) {
+  //       ctx.fill();
+  //     } else {
+  //       ctx.stroke();
+  //     }
+  //   }
+  // }
+
+  // // 二次贝塞尔曲线、三次贝塞尔曲线
+  // // 一般用于绘制复杂有规律的图形
+  // // quadraticCurveTo(cp1x, cp1y, x, y) 绘制二次贝塞尔曲线，cp1x,cp1y为一个控制点，x,y为结束点
+  // // bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) 绘制三次贝塞尔曲线，cp1x,cp1y为控制点一，cp2x,cp2y为控制点二，x,y为结束点。
+  // // 二次赛贝尔曲线 绘制tip框
+  // ctx.beginPath();
+  // ctx.moveTo(75, 25);
+  // ctx.quadraticCurveTo(25, 25, 25, 62.5);
+  // ctx.quadraticCurveTo(25, 100, 50, 100);
+  // ctx.quadraticCurveTo(50, 120, 30, 125);
+  // ctx.quadraticCurveTo(60, 120, 65, 100);
+  // ctx.quadraticCurveTo(125, 100, 125, 62.5);
+  // ctx.quadraticCurveTo(125, 25, 75, 25);
+  // ctx.stroke();
+  // 三次赛贝尔曲线 绘制心形
+  // ctx.beginPath();
+  // ctx.moveTo(75, 40);
+  // ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+  // ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+  // ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+  // ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+  // ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+  // ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+  // ctx.fillStyle = 'red';
+  // ctx.fill();
+
+  // // 组合使用
+  // // 封装一个绘制圆角矩形的函数
+  // const roundedRect = (ctx, x, y, width, height, radius) => {
+  //   ctx.beginPath();
+  //   ctx.moveTo(x, y + radius);
+  //   ctx.lineTo(x, y + height - radius);
+  //   ctx.quadraticCurveTo(x, y + height, x + radius, y + height);
+  //   ctx.lineTo(x + width - radius,  y + height);
+  //   ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
+  //   ctx.lineTo(x + width, y + radius);
+  //   ctx.quadraticCurveTo(x + width, y, x + width - radius, y);
+  //   ctx.lineTo(x + radius, y);
+  //   ctx.quadraticCurveTo(x, y, x, y + radius);
+  //   ctx.stroke();
+  // }
+
+  // roundedRect(ctx, 12, 12, 150, 150, 15);
+  // roundedRect(ctx, 19, 19, 150, 150, 9);
+  // roundedRect(ctx, 53, 53, 49, 33, 10);
+  // roundedRect(ctx, 53, 119, 49, 16, 6);
+  // roundedRect(ctx, 135, 53, 49, 33, 10);
+  // roundedRect(ctx, 135, 119, 25, 49, 10);
+
+  // ctx.beginPath();
+  // ctx.arc(37, 37, 13, Math.PI / 7, -Math.PI / 7, false);
+  // ctx.lineTo(31, 37);
+  // ctx.fill();
+
+  // for (let i = 0; i < 8; i++) {
+  //   ctx.fillRect(51 + i * 16, 35, 4, 4);
+  // }
+
+  // for (let i = 0; i < 6; i++) {
+  //   ctx.fillRect(115, 51 + i * 16, 4, 4);
+  // }
+
+  // for (let i = 0; i < 8; i++) {
+  //   ctx.fillRect(51 + i * 16, 99, 4, 4);
+  // }
+
+  // ctx.beginPath();
+  // ctx.moveTo(83, 116);
+  // ctx.lineTo(83, 102);
+  // ctx.bezierCurveTo(83, 94, 89, 88, 97, 88);
+  // ctx.bezierCurveTo(105, 88, 111, 94, 111, 102);
+  // ctx.lineTo(111, 116);
+  // ctx.lineTo(106.333, 111.333);
+  // ctx.lineTo(101.666, 116);
+  // ctx.lineTo(97, 111.333);
+  // ctx.lineTo(92.333, 116);
+  // ctx.lineTo(87.666, 111.333);
+  // ctx.lineTo(83, 116);
+  // ctx.fill();
+
+  // ctx.fillStyle = 'white';
+  // ctx.beginPath();
+  // ctx.moveTo(91, 96);
+  // ctx.bezierCurveTo(88, 96, 87, 99, 87, 101);
+  // ctx.bezierCurveTo(87, 103, 88, 106, 91, 106);
+  // ctx.bezierCurveTo(94, 106, 95, 103, 95, 101);
+  // ctx.bezierCurveTo(95, 99, 94, 96, 91, 96);
+  // ctx.moveTo(103, 96);
+  // ctx.bezierCurveTo(100, 96, 99, 99, 99, 101);
+  // ctx.bezierCurveTo(99, 103, 100, 106, 103, 106);
+  // ctx.bezierCurveTo(106, 106, 107, 103, 107, 101);
+  // ctx.bezierCurveTo(107, 99, 106, 96, 103, 96);
+  // ctx.fill();
+
+  // ctx.fillStyle = 'black';
+  // ctx.beginPath();
+  // ctx.arc(101, 102, 2, 0, Math.PI * 2, true);
+  // ctx.fill();
+
+  // ctx.beginPath();
+  // ctx.arc(89, 102, 2, 0, Math.PI * 2, true);
+  // ctx.fill();
+
+</script>
