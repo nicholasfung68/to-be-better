@@ -1,21 +1,5 @@
-// 链表数据结构
-const defaultEquals = (a, b) => {
-  return a === b;
-};
-
-class Node {
-  constructor(element) {
-    this.element = element; // 要加入链表元素的值
-    this.next = undefined; // 指向链表中下一个元素的指针
-  }
-}
-
-class LinkedList {
-  constructor(equalFn = defaultEquals) {
-    this.count = 0; // 用来存储链表中的元素数量。
-    this.head = undefined;
-    this.equalFn = equalFn;
-  }
+import { defaultEquals } from '../util.js';
+import { Node } from './models/linked-list-node.js'
 
 /*  
   push(element):向链表尾部添加一个新元素。
@@ -28,6 +12,13 @@ class LinkedList {
   size():返回链表包含的元素个数，与数组的 length 属性类似。
   toString():返回表示整个链表的字符串。由于列表项使用了 Node 类，就需要重写继承自 JavaScript 对象默认的 toString 方法，让其只输出元素的值。
 */
+
+export class LinkedList {
+  constructor(equalFn = defaultEquals) {
+    this.count = 0; // 用来存储链表中的元素数量。
+    this.head = undefined;
+    this.equalFn = equalFn;
+  }
 
   push(element) {
     const node = new Node(element);
@@ -44,8 +35,8 @@ class LinkedList {
     this.count++;
   }
 
-  getElement(index) {
-    if (index >= 0 && index < this.count) {
+  getElementAt(index) {
+    if (index >= 0 && index <= this.count) {
       let node = this.head;
       for (let i = 0; i < index && node != null; i++) {
         node = node.next;
@@ -73,14 +64,77 @@ class LinkedList {
     }
     return undefined;
   }
+
+  insert(element, index) {
+    if (index >= 0 && index <= this.count) {
+      const node = new Node(element);
+      if (index === 0) { // 在第一个位置添加
+        const current = this.head;
+        node.next = current;
+        this.head = node;
+      } else {
+        const previous = this.getElementAt(index -1);
+        const current = previous.next;
+        node.next = current;
+        previous.next = node;
+      }
+      this.count++; // 更新链表的长度
+      return true;
+    }
+    return false;
+  }
+
+  indexOf(element) {
+    let current = this.head;
+    for (let i = 0; i < this.count && current != null; i++) {
+      if (this.equalFn(element, current.element)) {
+        return i;
+      }
+      current = current.next;
+    }
+    return -1;
+  }
+
+  remove(element) {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+  }
+
+  size() {
+    return this.count;
+  }
+
+  isEmpty() {
+    return this.size() === 0;
+  }
+
+  getHead() {
+    return this.head;
+  }
+
+  toString() {
+    if (this.head == null) {
+      return '';
+    }
+    let objString = `${this.head.element}`;
+    let current = this.head.next;
+    for (let i = 1; i < this.size() && current != null; i++) {
+      objString = `${objString}, ${current.element}`;
+      current = current.next;
+    }
+    return objString;
+  }
 }
 
-const list = new LinkedList();
+/* const list = new LinkedList();
 list.push(15);
 list.push(10);
 list.push(12);
-console.log(111, list)
+console.log('linkedlist =>', list)
 list.removeAt(1);
-console.log(222, list)
-
-
+list.remove(10);
+console.log('linkedlist =>', list)
+console.log('head =>', list.getHead())
+console.log('size =>', list.size())
+console.log('isEmpty =>', list.isEmpty())
+console.log('toString =>', list.toString()) */
