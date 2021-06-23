@@ -34,6 +34,7 @@ function debounce(fn, delay = 200) {
 }
 
 
+
 // 节流 throttle -- 使用时间戳实现
 function throttle(fn, delay = 200) {
   if (typeof fn !== 'function') {
@@ -53,7 +54,3 @@ function throttle(fn, delay = 200) {
     }
   }
 }
-
-
-
-
