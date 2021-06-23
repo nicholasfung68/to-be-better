@@ -1,7 +1,7 @@
 /*
  * @Author: Nicholas Fung
  * @Date: 2021-06-23 22:47:14
- * @LastEditTime: 2021-06-23 23:23:53
+ * @LastEditTime: 2021-06-23 23:24:15
  * @LastEditors: Nicholas Fung
  * @Description:  自适应布局的一种实现方式，对应页面的盒子宽高、字体大小都要使用相对单位rem 才行
  * @Usage:
