@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>debounce and throttle test</title>
+</head>
+<body>
+  <button id="btn">debounce</button>
+</body>
+</html>
+
+<script>
+  // 防抖
+  function debounce(fn, delay = 500) {
+    let timeout = null
+    return function() {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+      timeout = setTimeout(() => {
+        fn.apply(this, arguments)
+      }, delay)
+    }
+  }
+
+  const sayHi = () => console.log('Hi Nicholas!')
+  const btn = document.querySelector('#btn')
+  btn && btn.addEventListener('click', debounce(sayHi, 2000))
+
+  // 节流
+  function throttle(fn, delay = 500) {
+    let canRun = true
+    return function() {
+      if (!canRun) {
+        return
+      } else {
+        canRun = false
+        setTimeout(() => {
+          fn.apply(this, arguments)
+          canRun = true
+        }, delay)
+      }
+    }
+  }
+
+  function throttleByTimestamp(fn, delay = 500) {
+    let preTime = 0
+    let curtTime = 0
+    return function() {
+      curtTime = new Date().getTime()
+      if (curtTime - preTime > delay) {
+        fn.apply(this, arguments)
+        preTime = curtTime
+      } 
+    }
+  }
+
+  const sayHello = () => console.log('Hello Nicholas!')
+  window.addEventListener('resize', throttle(sayHello, 5000))
+  // window.addEventListener('resize', throttleByTimestamp(sayHello, 2000))
+</script>

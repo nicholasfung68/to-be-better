@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DFS and BFS</title>
+</head>
+<body>
+  <div class="parent">
+    <div class="child-1">
+      <div class="child-1-1">
+        <div class="child-1-1-1">a</div>
+      </div>
+      <div class="child-1-2">
+        <div class="child-1-2-1">b</div>
+      </div>
+      <div class="child-1-3">c</div>
+    </div>
+
+    <div class="child-2">
+      <div class="child-2-1">d</div>
+      <div class="child-2-2">e</div>
+    </div>
+
+    <div class="child-3">
+      <div class="child-3-1">f</div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  // 基于DOM节点的遍历来理解
+
+  // DFS 实现方式1
+  const depthFirstSearch1 = (node, nodeList = []) => {
+    if (node) {
+      nodeList.push(node)
+      let children = node.children
+      for (let i = 0; i < children.length; i += 1) {
+        depthFirstSearch1(children[i], nodeList)
+      }
+    }
+    return nodeList
+  }
+
+  // DFS 实现方式2
+  const depthFirstSearch2 = (node) => {
+    let nodeList = []
+    if (node) {
+      nodeList.push(node)
+      const children = node.children
+      for (let i = 0; i < children.length; i += 1) {
+        nodeList = nodeList.concat(depthFirstSearch2(children[i]))
+      }
+    }
+    return nodeList
+  }
+
+  // DFS 实现方式3 非递归
+  const depthFirstSearch3 = (node) => {
+    const stack = []
+    const nodeList = []
+    if (node) {
+      stack.push(node)
+      while (stack.length) {
+        const item = stack.pop()
+        const children = item.children
+        nodeList.push(item)
+        // nodeList = [] stack = [parent]
+        // nodeList = [parent] stack = [child3,child2,child1]
+        // nodeList = [parent, child1] stack = [child3,child2,child1-2,child1-1]
+        // nodeList = [parent, child1-1] stack = [child3,child2,child1-2]
+        for (let i = children.length - 1; i >= 0; i -= 1) {
+          stack.push(children[i])
+        }
+      }
+    }
+    return nodeList
+  }
+
+  const node = document.querySelector('.parent')
+  node && console.log('DFS result =>\n', depthFirstSearch3(node))
+  // 通过打印的结果总结，简而言之就是深度优先，优先遍历当前节点下所有子节点，当遍历完该节点下的所有子节点，再去遍历相邻节点下的所有子节点，以此类推，直到遍历完为止。
+
+
+
+  // BFS实现方式
+  const breathFirstSearch = (node) => {
+    const nodeList = []
+    const queue = []
+    if (node) {
+      queue.push(node)
+      while (queue.length) {
+        const item = queue.shift()
+        const children = item.children
+        nodeList.push(item)
+        // 队列，先进先出
+        // nodeList = [] stack = [parent]
+        // nodeList = [parent] stack = [child1,child2,child3]
+        // nodeList = [parent, child1] stack = [child2,child3,child1-1,child1-2]
+        // nodeList = [parent, child1, child2]
+        for (let i = 0; i < children.length; i += 1) {
+          queue.push(children[i])
+        }
+      }
+    }
+    return nodeList
+  }
+
+  node && console.log('BFS result =>\n', breathFirstSearch(node))
+  // 通过打印的结果总结，简单来说广度优先就是优先遍历同一层级的节点，比如上面的child-1、child-2、child-3，遍历完该层级再遍历下一层级，以此类推，直至遍历完所有的层级为止。
+
+</script>
