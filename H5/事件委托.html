@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件委托 demo</title>
+</head>
+<body>
+  <ul id="parent">
+    <li>aaa</li>
+    <li>bbb</li>
+    <li>ccc</li>
+    <li>ddd</li>
+    <li>eee</li>
+    <li>fff</li>
+    <li>ggg</li>
+    <li>hhh</li>
+    <li>iii</li>
+    <li>jjj</li>
+  </ul>
+</body>
+</html>
+
+<style>
+  #parent {
+    list-style: none;
+  }
+
+  #parent li {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 20px;
+    text-align: center;
+    background-color: lightblue;
+  }
+</style>
+
+<script>
+/**
+ * 事件委托，通俗地说，就是把一个元素的响应事件的函数委托到另外一个元素；
+ * 一般来讲，会把一个或者一组元素的事件委托到它的父层或者更外层元素上去，真正绑定事件的是外层元素，当事件响应到需要绑定的元素上时，会通过事件冒泡机制从而触发它的外层元素的绑定事件，然后在外层元素上去执行函数。
+ * 事件模型：
+ *  捕获阶段：在事件冒泡的模型中，捕获阶段不会响应任何事件；
+ *  目标阶段：目标阶段就是事件响应到触发事件的最底层元素上；
+ *  冒泡阶段：冒泡阶段就是事件的触发响应会从最底层目标一层一层地向外到最外层（根节点），事件代理即是利用事件冒泡的机制把里层所需要响应的事件绑定到外层；
+ * 委托的优点：
+ *  减少内存消耗
+ *  动态绑定事件
+ */
+
+  window.onload = () => {
+    // 将所有的li元素的点击事件（click）委托到它们的父层，也就是id为parent的ul元素上
+    const parentEl = document.querySelector('#parent')
+    parentEl && parentEl.addEventListener('click', (e) => {
+      const event = e || window.event // 做兼容处理
+      const targetEl = event.target || event.srcElement // Event.srcElement 是标准的 Event.target 属性的一个别名。它只对老版本的IE浏览器有效。不要在生产环境中使用！
+      // 只有点击了li，才触发
+      if (targetEl.nodeName.toLocaleLowerCase() === 'li') {
+        alert(targetEl.innerHTML)
+        console.log(targetEl)
+      } else {
+        console.warn('点击的不是li标签噢~')
+      }
+    }, false)
+  }
+</script>
